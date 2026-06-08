@@ -69,7 +69,7 @@ class KnowledgeAugmentedPromptAgent:
                 {
                     "role": "system",
                     "content": (
-                        f"{self.persona} Forget all previous context. "
+                        f"You are {self.persona} knowledge-based assistant. Forget all previous context. "
                         f"Use only the following knowledge to answer, do not use your own knowledge: {self.knowledge} "
                         f"Answer the prompt based on this knowledge, not your own."
                     )

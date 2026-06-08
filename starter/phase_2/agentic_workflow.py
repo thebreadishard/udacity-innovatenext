@@ -28,7 +28,7 @@ knowledge_action_planning = (
 action_planning_agent = ActionPlanningAgent(openai_api_key, knowledge_action_planning)
 
 # Product Manager - Knowledge Augmented Prompt Agent
-persona_product_manager = "You are a Product Manager, you are responsible for defining the user stories for a product."
+persona_product_manager = "a Product Manager responsible for defining the user stories for a product, acting as a"
 knowledge_product_manager = (
     "Stories are defined by writing sentences with a persona, an action, and a desired outcome. "
     "The sentences always start with: As a "
@@ -43,7 +43,7 @@ evaluation_criteria_product_manager = "The answer should be stories that follow 
 product_manager_evaluation_agent = EvaluationAgent(openai_api_key, persona_product_manager_eval, evaluation_criteria_product_manager, product_manager_knowledge_agent, 10)
 
 # Program Manager - Knowledge Augmented Prompt Agent
-persona_program_manager = "You are a Program Manager, you are responsible for defining the features for a product."
+persona_program_manager = "a Program Manager responsible for defining the features for a product, acting as a"
 knowledge_program_manager = (
     "Features of a product are defined by organizing similar user stories into cohesive groups. "
     "Each feature must include: Feature Name, Description, Key Functionality, and User Benefit.\n\n"
@@ -64,7 +64,7 @@ evaluation_criteria_program_manager = (
 program_manager_evaluation_agent = EvaluationAgent(openai_api_key, persona_program_manager_eval, evaluation_criteria_program_manager, program_manager_knowledge_agent, 10)
 
 # Development Engineer - Knowledge Augmented Prompt Agent
-persona_dev_engineer = "You are a Development Engineer, you are responsible for defining the development tasks for a product."
+persona_dev_engineer = "a Development Engineer responsible for defining the development tasks for a product, acting as a"
 knowledge_dev_engineer = (
     "Development tasks are defined by identifying what needs to be built to implement each user story. "
     "Each task must be specifically tied to an Email Router user story and include: "
