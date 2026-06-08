@@ -1,14 +1,16 @@
 # agentic_workflow.py
 
-# TODO: 1 - Import the following agents: ActionPlanningAgent, KnowledgeAugmentedPromptAgent, EvaluationAgent, RoutingAgent from the workflow_agents.base_agents module
+from workflow_agents.base_agents import ActionPlanningAgent, KnowledgeAugmentedPromptAgent, EvaluationAgent, RoutingAgent
 
 import os
 from dotenv import load_dotenv
 
-# TODO: 2 - Load the OpenAI key into a variable called openai_api_key
+load_dotenv()
+openai_api_key = os.getenv("OPENAI_API_KEY")
 
 # load the product spec
-# TODO: 3 - Load the product spec document Product-Spec-Email-Router.txt into a variable called product_spec
+with open("Product-Spec-Email-Router.txt", "r", encoding="utf-8") as f:
+    product_spec = f.read()
 
 # Instantiate all the agents
 
