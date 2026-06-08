@@ -69,7 +69,7 @@ class KnowledgeAugmentedPromptAgent:
                 {
                     "role": "system",
                     "content": (
-                        f"You are {self.persona} knowledge-based assistant. Forget all previous context. "
+                        f"{self.persona} Forget all previous context. "
                         f"Use only the following knowledge to answer, do not use your own knowledge: {self.knowledge} "
                         f"Answer the prompt based on this knowledge, not your own."
                     )
@@ -278,7 +278,7 @@ class EvaluationAgent:
 
             print(" Step 3: Check if evaluation is positive")
             if evaluation.lower().startswith("yes"):
-                print("✅ Final solution accepted.")
+                print("Final solution accepted.")
                 break
             else:
                 print(" Step 4: Generate instructions to correct the response")
