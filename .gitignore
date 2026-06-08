@@ -71,3 +71,7 @@ dmypy.json
 # OS files
 .DS_Store
 Thumbs.db
+
+# RAG agent generated files
+chunks-*.csv
+embeddings-*.csv
