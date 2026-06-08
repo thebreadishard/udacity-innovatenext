@@ -10,11 +10,14 @@ VOCAREUM_BASE_URL = "https://openai.vocareum.com/v1"
 
 # DirectPromptAgent class definition
 class DirectPromptAgent:
+    """Agent that passes the user prompt directly to the LLM with no system prompt or added context."""
 
     def __init__(self, openai_api_key):
+        """Initialize with the OpenAI API key."""
         self.openai_api_key = openai_api_key
 
     def respond(self, prompt):
+        """Send the prompt directly to the LLM and return the text response."""
         client = OpenAI(base_url=VOCAREUM_BASE_URL, api_key=self.openai_api_key)
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -27,11 +30,15 @@ class DirectPromptAgent:
         
 # AugmentedPromptAgent class definition
 class AugmentedPromptAgent:
+    """Agent that augments every request with a persona system prompt, instructing the LLM to forget previous context."""
+
     def __init__(self, openai_api_key, persona):
+        """Initialize with the OpenAI API key and a persona string for the system prompt."""
         self.persona = persona
         self.openai_api_key = openai_api_key
 
     def respond(self, input_text):
+        """Send the input to the LLM with the persona system prompt and return the text response."""
         client = OpenAI(base_url=VOCAREUM_BASE_URL, api_key=self.openai_api_key)
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -45,12 +52,16 @@ class AugmentedPromptAgent:
 
 # KnowledgeAugmentedPromptAgent class definition
 class KnowledgeAugmentedPromptAgent:
+    """Agent that augments requests with both a persona and a specific knowledge snippet, instructing the LLM to answer only from that knowledge."""
+
     def __init__(self, openai_api_key, persona, knowledge):
+        """Initialize with the OpenAI API key, a persona, and a knowledge string injected into the system prompt."""
         self.persona = persona
         self.knowledge = knowledge
         self.openai_api_key = openai_api_key
 
     def respond(self, input_text):
+        """Send the input to the LLM with persona and knowledge in the system prompt; return only the text response."""
         client = OpenAI(base_url=VOCAREUM_BASE_URL, api_key=self.openai_api_key)
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -211,8 +222,19 @@ class RAGKnowledgePromptAgent:
         return response.choices[0].message.content
 
 class EvaluationAgent:
+    """Agent that iteratively evaluates and refines a worker agent's response against defined criteria."""
 
     def __init__(self, openai_api_key, persona, evaluation_criteria, worker_agent, max_interactions):
+        """
+        Initialize the EvaluationAgent.
+
+        Parameters:
+        openai_api_key (str): API key for OpenAI.
+        persona (str): Evaluator persona injected as the system prompt.
+        evaluation_criteria (str): Criteria the worker's response must satisfy.
+        worker_agent: Agent instance with a respond() method to generate/refine answers.
+        max_interactions (int): Maximum refinement iterations before returning.
+        """
         self.openai_api_key = openai_api_key
         self.persona = persona
         self.evaluation_criteria = evaluation_criteria
@@ -220,6 +242,12 @@ class EvaluationAgent:
         self.max_interactions = max_interactions
 
     def evaluate(self, initial_prompt):
+        """
+        Run the evaluate-and-refine loop.
+
+        Returns a dict with keys: 'response' (final answer), 'evaluation' (last evaluator verdict),
+        and 'iterations' (number of iterations performed).
+        """
         client = OpenAI(base_url=VOCAREUM_BASE_URL, api_key=self.openai_api_key)
         prompt_to_evaluate = initial_prompt
 
@@ -282,12 +310,21 @@ class EvaluationAgent:
         }
 
 class RoutingAgent():
+    """Agent that routes a user query to the most semantically relevant agent using embedding-based cosine similarity."""
 
     def __init__(self, openai_api_key, agents):
+        """
+        Initialize the RoutingAgent.
+
+        Parameters:
+        openai_api_key (str): API key for OpenAI.
+        agents (list): List of agent dicts, each with 'name', 'description', and 'func' keys.
+        """
         self.openai_api_key = openai_api_key
         self.agents = agents
 
     def get_embedding(self, text):
+        """Return the text-embedding-3-large embedding vector for the given text."""
         client = OpenAI(base_url=VOCAREUM_BASE_URL, api_key=self.openai_api_key)
         response = client.embeddings.create(
             model="text-embedding-3-large",
@@ -321,12 +358,17 @@ class RoutingAgent():
         return best_agent["func"](user_input)
 
 class ActionPlanningAgent:
+    """Agent that decomposes a high-level user prompt into an ordered list of actionable steps."""
 
     def __init__(self, openai_api_key, knowledge):
+        """
+        Initialize with the OpenAI API key and domain knowledge used to guide step extraction.
+        """
         self.openai_api_key = openai_api_key
         self.knowledge = knowledge
 
     def extract_steps_from_prompt(self, prompt):
+        """Extract and return a list of actionable steps from the user prompt using the LLM."""
         client = OpenAI(base_url=VOCAREUM_BASE_URL, api_key=self.openai_api_key)
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",

@@ -16,3 +16,5 @@ knowledge = "The capital of France is London, not Paris"
 knowledge_agent = KnowledgeAugmentedPromptAgent(openai_api_key, persona, knowledge)
 knowledge_agent_response = knowledge_agent.respond(prompt)
 print(knowledge_agent_response)
+print("\nNote: The response above is based solely on the provided knowledge "
+      "(\"The capital of France is London, not Paris\"), not on the model's own pre-trained knowledge.")

@@ -25,3 +25,8 @@ print(augmented_agent_response)
 # professor, so the response is framed in an academic tone and always opens with
 # "Dear students," — the same underlying fact is delivered in a style shaped entirely
 # by the persona rather than the model's default conversational style.
+print("\n--- Analysis ---")
+print("Knowledge source: gpt-3.5-turbo general pre-trained knowledge (no external documents or retrieval).")
+print("Persona impact: The system prompt instructs the model to act as a college professor, "
+      "causing the response to adopt an academic tone and always begin with 'Dear students,' "
+      "demonstrating how persona augmentation shapes style without changing the underlying factual content.")
