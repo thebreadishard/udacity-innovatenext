@@ -75,3 +75,6 @@ Thumbs.db
 # RAG agent generated files
 chunks-*.csv
 embeddings-*.csv
+
+# Personal reflection / working notes (not part of the submission)
+reflection.md
