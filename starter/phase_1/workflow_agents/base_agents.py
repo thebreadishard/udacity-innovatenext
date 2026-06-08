@@ -317,23 +317,33 @@ class RoutingAgent():
         print(f"[Router] Best agent: {best_agent['name']} (score={best_score:.3f})")
         return best_agent["func"](user_input)
 
-'''
 class ActionPlanningAgent:
 
     def __init__(self, openai_api_key, knowledge):
-        # TODO: 1 - Initialize the agent attributes here
+        self.openai_api_key = openai_api_key
+        self.knowledge = knowledge
 
     def extract_steps_from_prompt(self, prompt):
+        client = OpenAI(base_url=VOCAREUM_BASE_URL, api_key=self.openai_api_key)
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        f"You are an action planning agent. Using your knowledge, you extract from the user prompt "
+                        f"the steps requested to complete the action the user is asking for. You return the steps as a list. "
+                        f"Only return the steps in your knowledge. Forget any previous context. "
+                        f"This is your knowledge: {self.knowledge}"
+                    )
+                },
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0
+        )
 
-        # TODO: 2 - Instantiate the OpenAI client using the provided API key
-        # TODO: 3 - Call the OpenAI API to get a response from the "gpt-3.5-turbo" model.
-        # Provide the following system prompt along with the user's prompt:
-        # "You are an action planning agent. Using your knowledge, you extract from the user prompt the steps requested to complete the action the user is asking for. You return the steps as a list. Only return the steps in your knowledge. Forget any previous context. This is your knowledge: {pass the knowledge here}"
+        response_text = response.choices[0].message.content
 
-        response_text = ""  # TODO: 4 - Extract the response text from the OpenAI API response
-
-        # TODO: 5 - Clean and format the extracted steps by removing empty lines and unwanted text
-        steps = response_text.split("\n")
+        steps = [step for step in response_text.split("\n") if step.strip()]
 
         return steps
-'''
